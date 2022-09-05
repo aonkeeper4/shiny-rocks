@@ -67,7 +67,7 @@ impl ShinyThing {
         }).choose(&mut rng).expect("unable to get image");
 
         let mut file = File::create(format!(
-            "assets/imgs/{}.png",
+            "/assets/gen_imgs/{}.png",
             chosen_img_name,
         )).expect("unable to create asset file");
         let img_bytes = reqwest::get(&chosen_img_url)
