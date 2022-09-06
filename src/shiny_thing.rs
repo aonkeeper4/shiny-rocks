@@ -31,6 +31,10 @@ impl ShinyThing {
         Self { id, name, shinyness: 0., url }
     }
 
+    pub fn id(&self) -> usize {
+        self.id
+    }
+
     pub async fn gen_new() -> ReqwestResult<Self> {
         // why is cors yelling at me
         let mut rng = thread_rng();
