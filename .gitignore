@@ -1,2 +1,5 @@
 /target
 /assets/gen_imgs
+/.replit
+/replit.nix
+/dist
