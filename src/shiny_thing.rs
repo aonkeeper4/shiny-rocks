@@ -1,4 +1,4 @@
-use urlencoding::encode;
+use urlencoding::encode as urlencode;
 use rand::thread_rng;
 use rand::seq::{IteratorRandom, SliceRandom};
 use reqwest_wasm_wasm::{Result as ReqwestResult};
@@ -12,8 +12,8 @@ static COUNTER: AtomicUsize = AtomicUsize::new(1); // stores next valid id
 fn get_id() -> usize { COUNTER.fetch_add(1, Ordering::Relaxed) } // fn to get next valid id
 
 const SEARCH_QUERIES: [&str; 5] = [
-    "shiny thing",
-    "shiny rock",
+    "shiny%20thing",
+    "shiny%20rock",
     "rock",
     "gemstone",
     "meteorite",
@@ -36,16 +36,12 @@ impl ShinyThing {
     }
 
     pub async fn gen_new() -> ReqwestResult<Self> {
-        // why is cors yelling at me
         let mut rng = thread_rng();
 
         let query = SEARCH_QUERIES
             .choose(&mut rng)
             .expect("unable to generate search query");
-        let url = format!(
-            "https://www.google.com/search?q={}&tbm=isch",
-            encode(query),
-        );
+        let url = format!("https://www.google.com/search?q={}&tbm=isch", query);
 
         let html = Html::parse_document(
             reqwest_wasm::get(url)
