@@ -10,6 +10,7 @@ use std::collections::HashMap;
 static COUNTER: AtomicUsize = AtomicUsize::new(1); // stores next valid id
 fn get_id() -> usize { COUNTER.fetch_add(1, Ordering::Relaxed) } // fn to get next valid id
 
+// these have to be url encoded
 const SEARCH_QUERIES: [&str; 5] = [
     "shiny%20thing",
     "shiny%20rock",
@@ -40,7 +41,7 @@ impl ShinyThing {
         let query = SEARCH_QUERIES
             .choose(&mut rng)
             .expect("unable to generate search query");
-        let url = format!("https://www.google.com/search?q={}&tbm=isch", query);
+        let url = format!("https://pixabay.com/images/search/{}/", query);
 
         let html = Html::parse_document(
             reqwest_wasm::get(&url)
