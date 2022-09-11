@@ -2,6 +2,7 @@ use yew::prelude::*;
 
 mod shiny_thing;
 use shiny_thing::ShinyThing;
+use reqwest_wasm::Result as ReqwestResult;
 
 #[function_component(App)]
 fn app() -> Html {
@@ -13,11 +14,8 @@ fn app() -> Html {
             wasm_bindgen_futures::spawn_local(async move {
                 let mut gen_shiny_things = vec![];
                 for _ in 0..5 {
-                    gen_shiny_things.push(
-                        ShinyThing::gen_new()
-                            .await
-                            .unwrap_or_else(|e| panic!("building shiny thing failed: {e}"))
-                    );
+                    let shiny_thing_res: ReqwestResult<ShinyThing> = ShinyThing::gen_new().await;
+                    gen_shiny_things.push(shiny_thing_res.unwrap_or_else(|e| panic!("building shiny thing failed: {e}")));
                 }
                 shiny_things.set(gen_shiny_things);
             });

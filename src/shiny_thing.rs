@@ -1,7 +1,6 @@
-use urlencoding::encode as urlencode;
 use rand::thread_rng;
 use rand::seq::{IteratorRandom, SliceRandom};
-use reqwest_wasm_wasm::{Result as ReqwestResult};
+use reqwest_wasm::{Result as ReqwestResult};
 use scraper::{Html, Selector};
 use std::fs::File;
 use std::io::Write;
@@ -44,7 +43,7 @@ impl ShinyThing {
         let url = format!("https://www.google.com/search?q={}&tbm=isch", query);
 
         let html = Html::parse_document(
-            reqwest_wasm::get(url)
+            reqwest_wasm::get(&url)
                 .await?
                 .text()
                 .await?
