@@ -1,7 +1,7 @@
 use urlencoding::encode;
 use rand::thread_rng;
 use rand::seq::{IteratorRandom, SliceRandom};
-use reqwest::{Result as ReqwestResult};
+use reqwest_wasm_wasm::{Result as ReqwestResult};
 use scraper::{Html, Selector};
 use std::fs::File;
 use std::io::Write;
@@ -48,7 +48,7 @@ impl ShinyThing {
         );
 
         let html = Html::parse_document(
-            reqwest::get(url)
+            reqwest_wasm::get(url)
                 .await?
                 .text()
                 .await?
@@ -74,7 +74,7 @@ impl ShinyThing {
             "/assets/gen_imgs/{}.png",
             chosen_img_name,
         )).expect("unable to create asset file");
-        let img_bytes = reqwest::get(&chosen_img_url)
+        let img_bytes = reqwest_wasm::get(&chosen_img_url)
             .await?
             .bytes()
             .await?;
